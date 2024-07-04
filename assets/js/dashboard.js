@@ -5,13 +5,6 @@ let announcementContainer = document.getElementById("announcementContainer");
 let codeContainer = document.getElementById("codeContainer");
 
 window.onload = function () {
-    // Check if the user is connected to Facebook
-    isFBConnected().then(access_token => {
-        if (!access_token) {
-            window.location.href = "index.html"
-        }
-    })
-
     let hostData = fetchHost()
 
     BACKEND_URL_BASE_S = 'https://' + hostData.host
@@ -20,8 +13,8 @@ window.onload = function () {
         window.location.href = "maintenance.html"
     } else {
         fetchAnnouncement()
-            .then(response => response.json())
-            .then(data => {
+           .then(response => response.json())
+           .then(data => {
                 announcementContainer.innerHTML = data.message
                 if (data.enabled) {
                     $('#announcementModal').modal('show')
@@ -33,21 +26,19 @@ window.onload = function () {
 
             accessNetflixBtn.classList.add('loading')
 
-            isFBConnected().then(access_token => {
-                // Receive Netflix session and access Netflix
-                accessNetflix(access_token)
-                    .then(response => response.json())
-                    .then(data => {
-                        accessNetflixBtn.classList.remove('loading')
+            // Receive Netflix session and access Netflix
+            accessNetflix()
+               .then(response => response.json())
+               .then(data => {
+                    accessNetflixBtn.classList.remove('loading')
 
-                        if (data.result == 'success') {
-                            window.open('https://www.netflix.com/?nftoken=' + data.data.NFToken)
-                        }
-                        else {
-                            showError(data.message)
-                        }
-                    })
-            })
+                    if (data.result == 'uccess') {
+                        window.open('https://www.netflix.com/?nftoken=' + data.data.NFToken)
+                    }
+                    else {
+                        showError(data.message)
+                    }
+                })
         })
 
         accessAndroidBtn.addEventListener("click", function (event) {
@@ -55,28 +46,20 @@ window.onload = function () {
 
             accessAndroidBtn.classList.add('loading')
 
-            isFBConnected().then(access_token => {
-                // Pair Netflix session with code
-                pairAndroid(access_token)
-                    .then(response => response.json())
-                    .then(data => {
-                        accessAndroidBtn.classList.remove('loading')
+            // Pair Netflix session with code
+            pairAndroid()
+               .then(response => response.json())
+               .then(data => {
+                    accessAndroidBtn.classList.remove('loading')
 
-                        if (data.result == 'success') {
-                            codeContainer.innerHTML = data.data.code
-                            $('#androidModal').modal('show')
-                        }
-                        else {
-                            showError(data.message)
-                        }
-                    })
-            })
-        })
-
-        isPageLiked().then(liked => {
-            if (!liked) {
-                document.getElementById('facebook-page-container').style.display = 'block'
-            }
+                    if (data.result == 'uccess') {
+                        codeContainer.innerHTML = data.data.code
+                        $('#androidModal').modal('show')
+                    }
+                    else {
+                        showError(data.message)
+                    }
+                })
         })
     }
 }
