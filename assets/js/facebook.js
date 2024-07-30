@@ -1,9 +1,9 @@
 window.fbAsyncInit = function () {
-    // Initialize the SDK with your app and the Graph API version for your app 
+    // Initialize the SDK with your app
     FB.init({
-        appId: '357140426152444',
+        appId: '929867048907751',
         xfbml: true,
-        version: 'v19.0',
+        version: 'v20.0',
         status: true
     });
 };
